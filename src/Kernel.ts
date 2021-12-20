@@ -9,16 +9,16 @@ export default class Kernel {
 
   constructor (token: string) {
     const JSON_PACKAGE = this.loadFile(join(process.cwd(), 'package.json'))
-
     const rcFile = this.loadRcFile()
 
     this.application = Application.create(process.cwd(), {
       appName: JSON_PACKAGE.name,
       version: JSON_PACKAGE.version,
-      rcFile
+      rcFile,
+      token
     })
 
-    this.assembler = new Assembler(this.application, token)
+    this.assembler = new Assembler(this.application)
     this.assembler.build()
   }
 

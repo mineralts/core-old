@@ -8,3 +8,11 @@
  *
  */
 
+import Kernel from './src/Kernel'
+import { Event, MineralEvent } from './src/entities/Event'
+
+export {
+  Kernel,
+  Event,
+  MineralEvent,
+}

@@ -10,9 +10,13 @@
 
 import Kernel from './src/Kernel'
 import { Event, MineralEvent } from './src/entities/Event'
+import PacketManager from './src/packets/PacketManager'
+import Collection from './src/utils/Collection'
 
 export {
   Kernel,
   Event,
   MineralEvent,
+  PacketManager,
+  Collection,
 }

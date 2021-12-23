@@ -1,11 +1,13 @@
 import Application from '@mineralts/application'
-import Assembler from '@mineralts/assembler'
+import { Assembler } from '@mineralts/assembler'
 import { join } from 'path'
 import fs from 'fs'
+import PacketManager from './packets/PacketManager'
 
 export default class Kernel {
   public application: Application
   private assembler: Assembler
+  private readonly packetManager: PacketManager
 
   constructor (token: string) {
     const JSON_PACKAGE = this.loadFile(join(process.cwd(), 'package.json'))
@@ -15,10 +17,12 @@ export default class Kernel {
       appName: JSON_PACKAGE.name,
       version: JSON_PACKAGE.version,
       rcFile,
-      token
+      token,
     })
 
-    this.assembler = new Assembler(this.application)
+    this.packetManager = new PacketManager()
+
+    this.assembler = new Assembler(this.application, this.packetManager)
     this.assembler.build()
   }
 

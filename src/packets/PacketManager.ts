@@ -2,6 +2,7 @@ import ReadyPacket from './ReadyPacket'
 import Collection from '@mineralts/api/build/src/utils/Collection'
 import Packet from '../entities/Packet'
 import GuildCreatePacket from './GuildCreatePacket'
+import MessageCreatePacket from './MessageCreatePacket'
 
 export default class PacketManager {
   public packets: Collection<string, Packet[]> = new Collection()
@@ -9,7 +10,8 @@ export default class PacketManager {
   constructor () {
     this.register(
       new ReadyPacket(),
-      new GuildCreatePacket()
+      new GuildCreatePacket(),
+      new MessageCreatePacket()
     )
   }
 

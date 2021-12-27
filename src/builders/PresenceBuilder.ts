@@ -8,7 +8,7 @@ export default class PresenceBuilder {
   }
 
   public build (payload: any) {
-    const activityBuilder = new ActivityBuilder(this.client)
+    const activityBuilder = new ActivityBuilder()
 
     return new Presence(
       this.guildMember.get(payload.user.id)!,

@@ -34,7 +34,7 @@ export default class GuildCreatePacket extends Packet {
 
   public async handle (assembler: Assembler, payload: any) {
 
-    const roleBuilder = new RoleBuilder(assembler.application.client)
+    const roleBuilder = new RoleBuilder()
     payload.roles.forEach((item: any) => {
       const role = roleBuilder.build(item)
       this.roles.set(role.id, role)
@@ -105,7 +105,6 @@ export default class GuildCreatePacket extends Packet {
       this.guild.invites.cache.set(invite.code, invite)
     })
 
-    console.log(this.guild.bots)
     assembler.application.client.guilds.cache.set(this.guild.id, this.guild)
 
     assembler.eventListener.emit('guildCreate', this.guild)

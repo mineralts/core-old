@@ -27,7 +27,7 @@ export default class MessageBuilder {
     const guild = this.client.guilds.cache.get(payload.guild_id)!
     const channel = guild.channels.cache.get(payload.channel_id) as TextChannel
 
-    const author = guild.members.cache.get(payload.author.id)!
+    const author = guild.members.cache.get(payload.author.id) || guild.bots.cache.get(payload.author.id)
 
     const mentionChannel: Collection<Snowflake, any> = new Collection()
     const channelMentions = payload.content.split(' ')

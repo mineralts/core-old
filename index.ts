@@ -12,6 +12,8 @@ import Kernel from './src/Kernel'
 import { Event, MineralEvent } from './src/entities/Event'
 import PacketManager from './src/packets/PacketManager'
 import Collection from '@mineralts/api/build/src/utils/Collection'
+import MessageBuilder from './src/builders/MessageBuilder'
+import RateLimitException from './src/exceptions/RateLimitException'
 
 export {
   Kernel,
@@ -19,4 +21,7 @@ export {
   MineralEvent,
   PacketManager,
   Collection,
+  MessageBuilder,
+
+  RateLimitException,
 }

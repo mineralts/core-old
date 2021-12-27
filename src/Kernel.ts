@@ -6,7 +6,7 @@ import PacketManager from './packets/PacketManager'
 
 export default class Kernel {
   public application: Application
-  private assembler: Assembler
+  private readonly assembler: Assembler
   private readonly packetManager: PacketManager
 
   constructor (token: string) {
@@ -24,6 +24,8 @@ export default class Kernel {
 
     this.assembler = new Assembler(this.application, this.packetManager)
     this.assembler.build()
+
+    this.application.registerBinding('request', this.assembler.connector.http)
   }
 
   protected loadRcFile () {

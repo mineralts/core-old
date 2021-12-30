@@ -21,7 +21,7 @@ export default class GuildMemberBuilder {
       payload.user.id,
       payload.nick || user.username,
       user,
-      undefined as any,
+      this.guild,
       new GuildMemberRoleManager(),
       payload.highest_role
         ? this.roles.get(payload.highest_role)!

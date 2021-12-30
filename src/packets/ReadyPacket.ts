@@ -1,8 +1,7 @@
 import { Assembler } from '@mineralts/assembler'
-import { Client, User } from '@mineralts/api'
+import { Client, User, Collection } from '@mineralts/api'
 import { DateTime } from 'luxon'
 import Packet from '../entities/Packet'
-import Collection from '@mineralts/api/build/src/utils/Collection'
 
 export default class ReadyPacket extends Packet {
   public packetType = 'READY'

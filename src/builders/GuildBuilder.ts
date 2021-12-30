@@ -66,7 +66,6 @@ export default class GuildBuilder {
       this.payload.system_channel_id,
       this.payload.vanity_url_code,
       this.payload.embedded_activities,
-      this.payload.premium_progress_bar_enabled,
       new InviteManager()
     )
   }

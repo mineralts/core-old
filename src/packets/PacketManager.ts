@@ -3,6 +3,12 @@ import Collection from '@mineralts/api/build/src/utils/Collection'
 import Packet from '../entities/Packet'
 import GuildCreatePacket from './GuildCreatePacket'
 import MessageCreatePacket from './MessageCreatePacket'
+import ChannelCreatePacket from './ChannelCreatePacket'
+import ChannelDeletePacket from './ChannelDeletePacket'
+import ChannelUpdatePacket from './ChannelUpdatePacket'
+import InviteCreatePacket from './InviteCreatePacket'
+import InviteDeletePacket from './InviteDeletePacket'
+import MemberJoinPacket from './MemberJoinPacket'
 
 export default class PacketManager {
   public packets: Collection<string, Packet[]> = new Collection()
@@ -11,7 +17,13 @@ export default class PacketManager {
     this.register(
       new ReadyPacket(),
       new GuildCreatePacket(),
-      new MessageCreatePacket()
+      new MessageCreatePacket(),
+      new ChannelCreatePacket(),
+      new ChannelDeletePacket(),
+      new ChannelUpdatePacket(),
+      new InviteCreatePacket(),
+      new InviteDeletePacket(),
+      new MemberJoinPacket(),
     )
   }
 

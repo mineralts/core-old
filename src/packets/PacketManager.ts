@@ -10,6 +10,7 @@ import InviteCreatePacket from './InviteCreatePacket'
 import InviteDeletePacket from './InviteDeletePacket'
 import MemberJoinPacket from './MemberJoinPacket'
 import MessageReactionAdd from './MessageReactionAdd'
+import MessageReactionRemove from './MessageReactionRemove'
 
 export default class PacketManager {
   public packets: Collection<string, Packet[]> = new Collection()
@@ -26,6 +27,7 @@ export default class PacketManager {
       new InviteDeletePacket(),
       new MemberJoinPacket(),
       new MessageReactionAdd(),
+      new MessageReactionRemove(),
     )
   }
 

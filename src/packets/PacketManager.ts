@@ -11,6 +11,7 @@ import InviteDeletePacket from './InviteDeletePacket'
 import MemberJoinPacket from './MemberJoinPacket'
 import MessageReactionAdd from './MessageReactionAdd'
 import MessageReactionRemove from './MessageReactionRemove'
+import MessageDeletePacket from './MessageDeletePacket'
 
 export default class PacketManager {
   public packets: Collection<string, Packet[]> = new Collection()
@@ -20,6 +21,7 @@ export default class PacketManager {
       new ReadyPacket(),
       new GuildCreatePacket(),
       new MessageCreatePacket(),
+      new MessageDeletePacket(),
       new ChannelCreatePacket(),
       new ChannelDeletePacket(),
       new ChannelUpdatePacket(),

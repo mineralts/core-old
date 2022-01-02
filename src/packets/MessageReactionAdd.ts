@@ -15,8 +15,6 @@ export default class MessageReactionAdd extends Packet {
     const message = channel.messages.cache.get(payload.message_id)
 
     if (message) {
-
-      console.log(payload)
       const member: GuildMember | undefined = guild?.members.cache.get(payload.user_id)
 
       const emojiBuilder: EmojiBuilder = new EmojiBuilder()

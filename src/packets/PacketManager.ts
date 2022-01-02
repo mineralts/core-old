@@ -17,6 +17,7 @@ import MemberLeavePacket from './MemberLeavePacket'
 import RoleCreatePacket from './RoleCreatePacket'
 import RoleUpdatePacket from './RoleUpdatePacket'
 import RoleDeletePacket from './RoleDeletePacket'
+import RuleAcceptPacket from './RuleAcceptPacket'
 
 export default class PacketManager {
   public packets: Collection<string, Packet[]> = new Collection()
@@ -40,6 +41,7 @@ export default class PacketManager {
       new RoleCreatePacket(),
       new RoleUpdatePacket(),
       new RoleDeletePacket(),
+      new RuleAcceptPacket(),
     )
   }
 

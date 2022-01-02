@@ -19,6 +19,7 @@ import RoleUpdatePacket from './RoleUpdatePacket'
 import RoleDeletePacket from './RoleDeletePacket'
 import RuleAcceptPacket from './RuleAcceptPacket'
 import TypingStartPacket from './TypingStartPacket'
+import VoiceJoinPacket from './VoiceJoinPacket'
 
 export default class PacketManager {
   public packets: Collection<string, Packet[]> = new Collection()
@@ -44,6 +45,7 @@ export default class PacketManager {
       new RoleDeletePacket(),
       new RuleAcceptPacket(),
       new TypingStartPacket(),
+      new VoiceJoinPacket(),
     )
   }
 

@@ -14,6 +14,7 @@ import MessageReactionRemove from './MessageReactionRemove'
 import MessageDeletePacket from './MessageDeletePacket'
 import MessageUpdatePacket from './MessageUpdatePacket'
 import MemberLeavePacket from './MemberLeavePacket'
+import RoleCreatePacket from './RoleCreatePacket'
 
 export default class PacketManager {
   public packets: Collection<string, Packet[]> = new Collection()
@@ -34,6 +35,7 @@ export default class PacketManager {
       new MemberLeavePacket(),
       new MessageReactionAdd(),
       new MessageReactionRemove(),
+      new RoleCreatePacket(),
     )
   }
 

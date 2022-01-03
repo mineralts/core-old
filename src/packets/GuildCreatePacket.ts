@@ -33,7 +33,6 @@ export default class GuildCreatePacket extends Packet {
   private guild!: Guild
 
   public async handle (assembler: Assembler, payload: any) {
-
     const roleBuilder = new RoleBuilder()
     payload.roles.forEach((item: any) => {
       const role = roleBuilder.build(item)
@@ -54,7 +53,7 @@ export default class GuildCreatePacket extends Packet {
       }
     })
 
-    const emojiBuilder = new EmojiBuilder(assembler.application.client, this.roles)
+    const emojiBuilder = new EmojiBuilder()
     payload.emojis.forEach((item: any) => {
       const emoji = emojiBuilder.build(item)
       this.emojis.set(emoji.id, emoji)

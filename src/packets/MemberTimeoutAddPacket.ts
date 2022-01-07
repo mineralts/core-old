@@ -13,8 +13,9 @@ export default class MemberTimeoutAddPacket extends Packet {
 
     if (payload.communication_disabled_until) {
       const expire: DateTime = DateTime.fromISO(payload.communication_disabled_until)
-      guildMember!.communicationTimeout = expire
       const duration = expire.diffNow().toMillis()
+
+      guildMember!.communicationTimeout = expire
       assembler.eventListener.emit('memberTimeoutAdd', guildMember, duration)
     }
   }

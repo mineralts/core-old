@@ -26,8 +26,11 @@ export default class GuildMemberBuilder {
       payload.highest_role
         ? this.roles.get(payload.highest_role)!
         : null,
-      payload.is_pending,
+      payload.pending || false,
       undefined as any,
+      payload.communication_disabled_until
+        ? DateTime.fromISO(payload.communication_disabled_until)
+        : null,
       DateTime.fromISO(payload.joined_at),
     )
 

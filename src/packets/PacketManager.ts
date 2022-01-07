@@ -21,6 +21,8 @@ import RuleAcceptPacket from './RuleAcceptPacket'
 import TypingStartPacket from './TypingStartPacket'
 import VoiceJoinPacket from './VoiceJoinPacket'
 import VoiceLeavePacket from './VoiceLeavePacket'
+import MemberTimeoutAddPacket from './MemberTimeoutAddPacket'
+import MemberTimeoutRemovePacket from './MemberTimeoutRemovePacket'
 
 export default class PacketManager {
   public packets: Collection<string, Packet[]> = new Collection()
@@ -48,6 +50,8 @@ export default class PacketManager {
       new TypingStartPacket(),
       new VoiceJoinPacket(),
       new VoiceLeavePacket(),
+      new MemberTimeoutAddPacket(),
+      new MemberTimeoutRemovePacket(),
     )
   }
 

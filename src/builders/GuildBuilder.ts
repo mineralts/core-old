@@ -21,7 +21,7 @@ export default class GuildBuilder {
     const region = keyFromEnum(Region, this.payload.region) as keyof typeof Region
     const commandLength = Object.values(this.payload.application_command_counts).reduce((a: any, b: any) => a + b, 0) as number
 
-    return new Guild(
+    const guild = new Guild(
       this.payload.id,
       this.payload.name,
       this.payload.icon,
@@ -37,7 +37,7 @@ export default class GuildBuilder {
       this.payload.application_id,
       this.payload.nsfw,
       this.payload.member_count,
-      new GuildRoleManager(),
+      undefined as any,
       this.payload.stage_instances,
       this.payload.guild_hashes,
       this.payload.afk_channel_id,
@@ -68,5 +68,9 @@ export default class GuildBuilder {
       this.payload.embedded_activities,
       new InviteManager()
     )
+
+    guild.roles = new GuildRoleManager(guild)
+
+    return guild
   }
 }

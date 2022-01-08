@@ -10,7 +10,7 @@ export default class MemberTimeoutRemovePacket extends Packet {
 
     const guildMember = guild?.members.cache.get(payload.user.id)
 
-    if (!payload.communication_disabled_until) {
+    if (guildMember && !payload.communication_disabled_until) {
       guildMember!.communicationTimeout = null
       assembler.eventListener.emit('memberTimeoutRemove', guildMember)
     }

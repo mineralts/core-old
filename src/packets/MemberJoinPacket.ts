@@ -10,7 +10,7 @@ export default class MemberJoinPacket extends Packet {
     const client = assembler.application.client
     const guild = client.guilds.cache.get(payload.guild_id)
 
-    const guildMemberBuilder = new GuildMemberBuilder(client, guild?.roles, guild!)
+    const guildMemberBuilder = new GuildMemberBuilder(client, guild!.roles.cache, guild!)
     const guildMember = guildMemberBuilder.build(payload)
 
     if (guildMember.user.isBot) {

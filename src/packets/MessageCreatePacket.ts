@@ -7,6 +7,10 @@ export default class MessageCreatePacket extends Packet {
   public packetType = 'MESSAGE_CREATE'
 
   public async handle (assembler: Assembler, payload: any) {
+    if (!payload.guild_id) {
+      return
+    }
+
     const guild = assembler.application.client.guilds.cache.get(payload.guild_id)
     const channel = guild?.channels.cache.get(payload.channel_id) as TextChannel
 

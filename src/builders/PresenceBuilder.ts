@@ -1,5 +1,4 @@
-import { Client, Snowflake, GuildMember, Presence, PresenceStatus } from '@mineralts/api'
-import Collection from '@mineralts/api/build/src/utils/Collection'
+import { Client, Snowflake, GuildMember, Presence, PresenceStatus, Collection } from '@mineralts/api'
 import { keyFromEnum } from '../utils'
 import ActivityBuilder from './ActivityBuilder'
 

@@ -37,6 +37,7 @@ export default class ReadyPacket extends Packet {
     assembler.application.client = client
 
     await assembler.register()
+    await client.registerGlobalCommands(assembler)
 
     assembler.eventListener.emit('ready', client)
   }

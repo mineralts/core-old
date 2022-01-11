@@ -104,6 +104,8 @@ export default class GuildCreatePacket extends Packet {
       this.guild.invites.cache.set(invite.code, invite)
     })
 
+    await this.guild.registerCommands(assembler)
+
     assembler.application.client.guilds.cache.set(this.guild.id, this.guild)
 
     assembler.eventListener.emit('guildCreate', this.guild)

@@ -1,5 +1,5 @@
+import { Collection } from '@mineralts/api'
 import ReadyPacket from './ReadyPacket'
-import Collection from '@mineralts/api/build/src/utils/Collection'
 import Packet from '../entities/Packet'
 import GuildCreatePacket from './GuildCreatePacket'
 import MessageCreatePacket from './MessageCreatePacket'
@@ -23,6 +23,7 @@ import VoiceJoinPacket from './VoiceJoinPacket'
 import VoiceLeavePacket from './VoiceLeavePacket'
 import MemberTimeoutAddPacket from './MemberTimeoutAddPacket'
 import MemberTimeoutRemovePacket from './MemberTimeoutRemovePacket'
+import CommandInteractionPacket from './CommandInteractionPacket'
 
 export default class PacketManager {
   public packets: Collection<string, Packet[]> = new Collection()
@@ -52,6 +53,7 @@ export default class PacketManager {
       new VoiceLeavePacket(),
       new MemberTimeoutAddPacket(),
       new MemberTimeoutRemovePacket(),
+      new CommandInteractionPacket(),
     )
   }
 

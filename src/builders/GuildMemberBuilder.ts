@@ -6,10 +6,10 @@ import {
   GuildMemberRoleManager,
   Guild,
   VoiceState,
+  Collection
 } from '@mineralts/api'
 import { UserBuilder } from './UserBuilder'
 import { DateTime } from 'luxon'
-import Collection from '@mineralts/api/build/src/utils/Collection'
 
 export default class GuildMemberBuilder {
   constructor (private client: Client, private readonly roles: Collection<Snowflake, Role>, private guild: Guild) {

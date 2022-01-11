@@ -10,7 +10,7 @@
 
 import Kernel from './src/Kernel'
 import { Event, MineralEvent } from './src/entities/Event'
-import { Command, MineralCommand, Option } from './src/entities/Command'
+import { Command, Extend, MineralCommand, Option } from './src/entities/Command'
 import PacketManager from './src/packets/PacketManager'
 import MessageBuilder from './src/builders/MessageBuilder'
 import RateLimitException from './src/exceptions/RateLimitException'
@@ -21,6 +21,7 @@ export {
   MineralEvent,
   Command,
   Option,
+  Extend,
   MineralCommand,
   PacketManager,
   MessageBuilder,

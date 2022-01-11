@@ -8,9 +8,9 @@ import {
   Region,
   Snowflake,
   GuildEmojiManager,
-  InviteManager
+  InviteManager,
+  Collection
 } from '@mineralts/api'
-import Collection from '@mineralts/api/build/src/utils/Collection'
 import { keyFromEnum } from '../utils'
 
 export default class GuildBuilder {

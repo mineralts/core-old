@@ -17,7 +17,7 @@ export function Command (name: string, description: string, scope: 'GUILDS' | Sn
   }
 }
 
-export function Extend (parent: string, order: number, name: string, description: string) {
+export function Subcommand (parent: string, name: string, description: string) {
   return (target: any) => {
     if (!target.prototype.data) {
       target.prototype.data = {}
@@ -25,7 +25,6 @@ export function Extend (parent: string, order: number, name: string, description
 
     target.identifier = 'subcommand'
     target.prototype.data.parent = parent.toLowerCase().split('.')
-    target.prototype.data.order = order
     target.prototype.data.label = name
     target.prototype.data.description = description
   }

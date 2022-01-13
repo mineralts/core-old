@@ -23,10 +23,16 @@ export default class Kernel {
     this.packetManager = new PacketManager()
 
     this.assembler = new Assembler(this.application, this.packetManager)
-    this.assembler.build()
+    this.application.environment.registerEnvironment()
+  }
+
+  public async createApplication () {
+    await this.application.registerCliCommands()
+    await this.assembler.build()
 
     this.application.registerBinding('request', this.assembler.connector.http)
   }
+
 
   protected loadRcFile () {
     try {

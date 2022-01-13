@@ -14,6 +14,8 @@ import { Command, Subcommand, MineralCommand, Option } from './src/entities/Comm
 import PacketManager from './src/packets/PacketManager'
 import MessageBuilder from './src/builders/MessageBuilder'
 import RateLimitException from './src/exceptions/RateLimitException'
+import Ignitor from './src/standalone/Ignitor'
+import Environment from './src/Environment'
 
 export {
   Kernel,
@@ -26,4 +28,6 @@ export {
   PacketManager,
   MessageBuilder,
   RateLimitException,
+  Ignitor,
+  Environment
 }

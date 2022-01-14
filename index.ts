@@ -16,6 +16,7 @@ import MessageBuilder from './src/builders/MessageBuilder'
 import RateLimitException from './src/exceptions/RateLimitException'
 import Ignitor from './src/standalone/Ignitor'
 import Environment from './src/Environment'
+import Helper from './src/helper'
 
 export {
   Kernel,
@@ -29,5 +30,6 @@ export {
   MessageBuilder,
   RateLimitException,
   Ignitor,
-  Environment
+  Environment,
+  Helper
 }

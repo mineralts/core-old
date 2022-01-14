@@ -1,0 +1,9 @@
+import { Command, MineralCommand } from '@mineralts/core'
+import { CommandInteraction } from '@mineralts/api'
+
+@Command('$moduleNameLowercase', '$moduleClass command description', 'GUILD')
+export default class $moduleClass extends MineralCommand {
+  public async run (interaction: CommandInteraction) {
+    // Your code here
+  }
+}

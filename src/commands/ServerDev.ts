@@ -14,7 +14,7 @@ import path from 'path'
 
 export default class ServerDev extends Command {
   public static commandName = 'server:dev'
-  public static description = 'Make a new command class'
+  public static description = 'Starting the application in development mode'
 
   public async run (): Promise<void> {
     const esbuild = path.join(process.cwd(), 'node_modules', 'esbuild-dev', 'pkg', 'esbuild-dev.bin.js')

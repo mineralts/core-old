@@ -9,7 +9,7 @@
  */
 
 import { Command } from '@mineralts/forge'
-import { exec } from 'child_process'
+import { execSync } from 'child_process'
 import path from 'path'
 
 export default class ServerDev extends Command {
@@ -17,12 +17,18 @@ export default class ServerDev extends Command {
   public static description = 'Starting the application in development mode'
 
   public async run (): Promise<void> {
+    const jsonPackage = await import(path.join(process.cwd(), 'package.json'))
     const esbuild = path.join(process.cwd(), 'node_modules', 'esbuild-dev', 'pkg', 'esbuild-dev.bin.js')
-    const { stdout, stderr } = exec(`node ${esbuild} start/index.ts --supervise --commands --watch`, {
-      cwd: process.cwd()
+
+    console.clear()
+    this.logger.info(`Starting the application ${jsonPackage.name}`)
+    this.logger.info('Watching file system for changes...\n')
+
+    execSync(`node ${esbuild} start/index.ts --watch --supervise`, {
+      cwd: process.cwd(),
+      stdio: 'inherit',
     })
 
-    stdout?.pipe(process.stdout)
-    stderr?.pipe(process.stderr)
+    process.exit()
   }
 }

@@ -19,46 +19,85 @@ export default class Generator {
   private filename!: string
   public template!: string
   private location! : string[]
+  private dirs: string[] = []
 
   constructor (private logger: Logger) {
   }
 
-  public async write (module: string, args: string[]) {
-    const [loc] = args
+  public setFilename (value: string) {
+    this.filename = Application.getHelper()
+      .capitalCase(value)
+      .replace(/(.*)\.[^.]+$/, '')
 
-    const templateLocation = path.join(__dirname, '..', '..', '..', 'src', 'templates', `${module}.txt`)
-    this.template = await fs.promises.readFile(templateLocation, 'utf-8')
+    return this
+  }
 
-    const folders = loc.split('/')
-    this.location = folders.slice(0, folders.length - 1)
-    this.filename = `${folders.at(-1)}.ts`
+  public setTemplate (value: string) {
+    this.template = value
+    return this
+  }
 
+  public setLocation (value: string) {
+    this.location = value.startsWith('App')
+      ? value.split('/').slice(1)
+      : value.split('/')
+
+    return this
+  }
+
+  public async write () {
+    this.template = await fs.promises.readFile(this.template, 'utf-8')
     this.moduleLocation = path.join(this.root, ...this.location, this.filename)
-
-    await this.buildFolders()
-    await this.writeFile()
-    this.end()
+    return this.writeFile()
   }
 
   public buildFolders () {
-    return fs.promises.mkdir(path.join(this.root, ...this.location), { recursive: true })
+    const dir = path.join(this.root, ...this.location)
+    const hasFolder = fs.existsSync(dir)
+
+    if (!hasFolder) {
+      return fs.promises.mkdir(dir, { recursive: true })
+    }
   }
 
-  public writeFile () {
-    return fs.promises.writeFile(
-      path.join(this.root, ...this.location, this.filename),
+  public async writeFile () {
+    await fs.promises.writeFile(
+      path.join(this.root, ...this.location, `${this.filename}.ts`),
       this.template
-        .replaceAll('$moduleName', this.filename.split('.')[0])
-        .replaceAll('$moduleNameLowercase', this.filename.split('.')[0].toLowerCase())
-        .replaceAll('$moduleClass', Application.getHelper().capitalCase(this.filename.split('.')[0]).replace(/ /g, ''))
+        .replaceAll('$Class', this.filename)
     )
-  }
 
-  private end () {
     const finalLocation = this.moduleLocation
       .replace(this.root, 'App')
       .replaceAll(path.sep, '/')
 
     this.logger.info(`The order file has been generated in ${finalLocation}`)
+  }
+
+  public async loadFolders (directory: string) {
+    const fileOrFolders = await fs.promises.readdir(directory, { encoding: 'utf-8' })
+
+    await Promise.all(
+      fileOrFolders.map(async (object) => {
+        const dirPath = path.join(directory, object)
+        const item = await fs.promises.stat(dirPath)
+
+        const currentDir = dirPath.replace(path.join(process.cwd(), 'src'), 'App').split(path.sep)
+
+        const dir = currentDir.slice(0, currentDir.length - 1).join('/')
+
+        if (!this.dirs.includes(dir)) {
+          this.dirs.push(dir)
+        }
+
+        if (item.isDirectory()) {
+          return this.loadFolders(dirPath)
+        }
+      })
+    )
+  }
+
+  public getFolders () {
+    return this.dirs
   }
 }

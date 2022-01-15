@@ -20,5 +20,5 @@
   "exclude": [
     "build",
     "tests",
-  ]
+  ],
 }

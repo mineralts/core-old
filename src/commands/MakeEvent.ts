@@ -8,8 +8,7 @@
  *
  */
 
-import { Command } from '@mineralts/forge'
-import Generator from '../Generator'
+import { Command, FileGenerator } from '@mineralts/forge'
 import { prompt } from 'enquirer'
 import { clientEvents } from '@mineralts/api'
 import path from 'path'
@@ -18,16 +17,14 @@ export default class GenerateManifest extends Command {
   public static commandName = 'make:event'
   public static description = 'Make a new event class'
 
-  public async run (...args: string[]): Promise<void> {
-    const generator = new Generator(this.logger)
+  public async run (): Promise<void> {
+    const generator = new FileGenerator(this.logger)
     await generator.loadFolders(path.join(process.cwd(), 'src'))
 
-    const location = {
-      type: 'autocomplete',
-      name: 'filename',
-      message: 'Please define path location',
-      limit: 3,
-      choices: generator.getFolders()
+    const confirm = {
+      type: 'confirm',
+      name: 'confirm',
+      message: 'Would you like to create a new folder ?',
     }
 
     const filename = {
@@ -44,12 +41,45 @@ export default class GenerateManifest extends Command {
       choices: clientEvents
     }
 
-    const answers = await prompt([filename, location, eventType]) as { filename, location, eventType }
-    // generator.setFilename(answers.filename)
+    const answers = await prompt([filename, eventType, confirm]) as { filename, event, confirm }
+    generator.setFilename(answers.filename)
 
-    // await generator.write('event', args)
-    // await generator.buildFolders()
-    //
-    // await generator.writeFile()
+    answers.confirm
+      ? await this.createLocation(generator)
+      : await this.useLocation(generator)
+
+    const templateLocation = path.join(__dirname, '..', '..', '..', 'templates', 'event.txt')
+    generator.setTemplate(templateLocation, (content) => {
+      return content.replaceAll('$event', answers.event)
+    })
+
+    await generator.write()
+  }
+
+  protected async createLocation (generator: FileGenerator) {
+    const location = {
+      type: 'input',
+      name: 'location',
+      message: 'Please define the location of your file',
+      hint: 'App/Folder/SubFolder'
+    }
+
+    const answer = await prompt([location]) as { location: string }
+    generator.setLocation(answer.location)
+
+    await generator.buildFolders()
+  }
+
+  protected async useLocation (generator: FileGenerator) {
+    const location = {
+      type: 'autocomplete',
+      name: 'location',
+      message: 'Please define the location of your order',
+      limit: 3,
+      choices: generator.getFolders()
+    }
+
+    const answer = await prompt([location]) as { location: string }
+    generator.setLocation(answer.location)
   }
 }

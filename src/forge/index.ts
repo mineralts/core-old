@@ -14,34 +14,28 @@ import Logger from '@mineralts/logger'
 import path from 'path'
 
 class Forge {
-  public async handle (inputArguments: string[]) {
-    const logger = new Logger
-    const environment = new Environment()
-    environment.registerEnvironment()
+  private logger: Logger = new Logger
+  private environment: Environment = new Environment()
+  private kernel: Kernel = new Kernel(process.env.TOKEN!)
 
-    const token = environment.cache.get<string>('TOKEN')
+  public async handle () {
+    this.environment.registerEnvironment()
 
-    if (!token) {
-      logger.fatal('Token was not provided')
-      process.exit(1)
-    }
+    await this.kernel.application.registerCliCommands()
 
-    const kernel = new Kernel(token)
-    await kernel.application.registerCliCommands()
+    const { COMMAND_NAME, ARGS } = process.env
 
-    const [commandName, ...args] = inputArguments
-
-    if (commandName === 'generate:manifest' || commandName === 'help' || !commandName) {
-      const command = kernel.application.commands.get(commandName || 'help')
+    if (COMMAND_NAME === 'generate:manifest' || COMMAND_NAME === 'help' || !COMMAND_NAME) {
+      const command = this.kernel.application.commands.get(COMMAND_NAME || 'help')
       await command.run()
     } else {
       const forgeManifest = await import(path.join(process.cwd(), 'forge-manifest.json'))
       const forgeCommand = forgeManifest.commands.find((command: { commandName: string }) => (
-        command.commandName === commandName
+        command.commandName === COMMAND_NAME
       ))
 
       if (!forgeCommand) {
-        logger.error('Command not found.')
+        this.logger.error('Command not found.')
         return
       }
 
@@ -52,13 +46,12 @@ class Forge {
       const { default: Command } = await import(location)
       const command = new Command()
 
-      command.logger = logger
-      command.application = kernel.application
+      command.logger = this.logger
+      command.application = this.kernel.application
 
-      await command.run(...args)
+      await command.run(...ARGS || [])
     }
   }
 }
 
-new Forge()
-  .handle(process.argv.slice(2))
+new Forge().handle()

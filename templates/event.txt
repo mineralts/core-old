@@ -1,7 +1,7 @@
 import { Event, MineralCommand } from '@mineralts/core'
 
-@Event('event')
-export default class $moduleClass extends MineralCommand {
+@Event('$event')
+export default class $Class extends MineralCommand {
   public async run (...args: any[]) {
     // Your code here
   }

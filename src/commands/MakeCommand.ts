@@ -9,17 +9,67 @@
  */
 
 import { Command } from '@mineralts/forge'
-import Generator from '../Generator'
+import { FileGenerator } from '@mineralts/forge'
+import path from 'path'
+import { prompt } from 'enquirer'
 
 export default class GenerateManifest extends Command {
   public static commandName = 'make:command'
   public static description = 'Make a new command class'
 
-  public async run (...args: string[]): Promise<void> {
-    const generator = new Generator(this.logger)
+  public async run (): Promise<void> {
+    const generator = new FileGenerator(this.logger)
+    await generator.loadFolders(path.join(process.cwd(), 'src'))
 
-    await generator.write('command', args)
+    const confirm = {
+      type: 'confirm',
+      name: 'confirm',
+      message: 'Would you like to create a new folder ?',
+    }
+
+    const filename = {
+      type: 'input',
+      name: 'filename',
+      message: 'Please define a name for your file'
+    }
+
+    const answers = await prompt([filename, confirm]) as { filename, confirm }
+    generator.setFilename(answers.filename)
+
+    answers.confirm
+      ? await this.createLocation(generator)
+      : await this.useLocation(generator)
+
+    const templateLocation = path.join(__dirname, '..', '..', '..', 'templates', 'command.txt')
+    generator.setTemplate(templateLocation)
+
+    await generator.write()
+  }
+
+  protected async createLocation (generator: FileGenerator) {
+    const location = {
+      type: 'input',
+      name: 'location',
+      message: 'Please define the location of your file',
+      hint: 'App/Folder/SubFolder'
+    }
+
+    const answer = await prompt([location]) as { location: string }
+    generator.setLocation(answer.location)
+
     await generator.buildFolders()
-    await generator.writeFile()
+  }
+
+  protected async useLocation (generator: FileGenerator) {
+    const location = {
+      type: 'autocomplete',
+      name: 'location',
+      message: 'Please define the location of your order',
+      limit: 3,
+      choices: generator.getFolders()
+    }
+
+    const answer = await prompt([location]) as { location: string }
+    generator.setLocation(answer.location)
   }
 }

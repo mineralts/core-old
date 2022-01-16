@@ -13,9 +13,13 @@ import { FileGenerator } from '@mineralts/forge'
 import path from 'path'
 import { prompt } from 'enquirer'
 
-export default class GenerateManifest extends Command {
+export default class MakeCommand extends Command {
   public static commandName = 'make:command'
   public static description = 'Make a new command class'
+
+  public static settings = {
+    loadApp: false
+  }
 
   public async run (): Promise<void> {
     const generator = new FileGenerator(this.logger)
@@ -33,17 +37,21 @@ export default class GenerateManifest extends Command {
       message: 'Please define a name for your file'
     }
 
-    const answers = await prompt([filename, confirm]) as { filename, confirm }
-    generator.setFilename(answers.filename)
+    try {
+      const answers = await prompt([filename, confirm]) as { filename, confirm }
+      generator.setFilename(answers.filename)
 
-    answers.confirm
-      ? await this.createLocation(generator)
-      : await this.useLocation(generator)
+      answers.confirm
+        ? await this.createLocation(generator)
+        : await this.useLocation(generator)
 
-    const templateLocation = path.join(__dirname, '..', '..', '..', 'templates', 'command.txt')
-    generator.setTemplate(templateLocation)
+      const templateLocation = path.join(__dirname, '..', '..', '..', 'templates', 'command.txt')
+      generator.setTemplate(templateLocation)
 
-    await generator.write()
+      await generator.write()
+    } catch (err) {
+      this.logger.error('Order has been cancelled.')
+    }
   }
 
   protected async createLocation (generator: FileGenerator) {
@@ -54,10 +62,14 @@ export default class GenerateManifest extends Command {
       hint: 'App/Folder/SubFolder'
     }
 
-    const answer = await prompt([location]) as { location: string }
-    generator.setLocation(answer.location)
+    try {
+      const answer = await prompt([location]) as { location: string }
+      generator.setLocation(answer.location)
 
-    await generator.buildFolders()
+      await generator.buildFolders()
+    } catch (err) {
+      this.logger.error('Order has been cancelled.')
+    }
   }
 
   protected async useLocation (generator: FileGenerator) {
@@ -69,7 +81,11 @@ export default class GenerateManifest extends Command {
       choices: generator.getFolders()
     }
 
-    const answer = await prompt([location]) as { location: string }
-    generator.setLocation(answer.location)
+    try {
+      const answer = await prompt([location]) as { location: string }
+      generator.setLocation(answer.location)
+    } catch (err) {
+      this.logger.error('Order has been cancelled.')
+    }
   }
 }

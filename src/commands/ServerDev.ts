@@ -24,7 +24,7 @@ export default class ServerDev extends Command {
     this.logger.info(`Starting the application ${jsonPackage.name}`)
     this.logger.info('Watching file system for changes...\n')
 
-    execSync(`node ${esbuild} start/index.ts --watch --supervise`, {
+    execSync(`node ${esbuild} start/index.ts --commands --watch --supervise`, {
       cwd: process.cwd(),
       stdio: 'inherit',
     })

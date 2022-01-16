@@ -41,19 +41,23 @@ export default class GenerateManifest extends Command {
       choices: clientEvents
     }
 
-    const answers = await prompt([filename, eventType, confirm]) as { filename, event, confirm }
-    generator.setFilename(answers.filename)
+    try {
+      const answers = await prompt([filename, eventType, confirm]) as { filename, event, confirm }
+      generator.setFilename(answers.filename)
 
-    answers.confirm
-      ? await this.createLocation(generator)
-      : await this.useLocation(generator)
+      answers.confirm
+        ? await this.createLocation(generator)
+        : await this.useLocation(generator)
 
-    const templateLocation = path.join(__dirname, '..', '..', '..', 'templates', 'event.txt')
-    generator.setTemplate(templateLocation, (content) => {
-      return content.replaceAll('$event', answers.event)
-    })
+      const templateLocation = path.join(__dirname, '..', '..', '..', 'templates', 'event.txt')
+      generator.setTemplate(templateLocation, (content) => {
+        return content.replaceAll('$event', answers.event)
+      })
 
-    await generator.write()
+      await generator.write()
+    } catch (err) {
+      this.logger.error('Order has been cancelled.')
+    }
   }
 
   protected async createLocation (generator: FileGenerator) {
@@ -64,10 +68,14 @@ export default class GenerateManifest extends Command {
       hint: 'App/Folder/SubFolder'
     }
 
-    const answer = await prompt([location]) as { location: string }
-    generator.setLocation(answer.location)
+    try {
+      const answer = await prompt([location]) as { location: string }
+      generator.setLocation(answer.location)
 
-    await generator.buildFolders()
+      await generator.buildFolders()
+    } catch (err) {
+      this.logger.error('Order has been cancelled.')
+    }
   }
 
   protected async useLocation (generator: FileGenerator) {
@@ -79,7 +87,11 @@ export default class GenerateManifest extends Command {
       choices: generator.getFolders()
     }
 
-    const answer = await prompt([location]) as { location: string }
-    generator.setLocation(answer.location)
+    try {
+      const answer = await prompt([location]) as { location: string }
+      generator.setLocation(answer.location)
+    } catch (err) {
+      this.logger.error('Order has been cancelled.')
+    }
   }
 }

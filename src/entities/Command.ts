@@ -25,7 +25,7 @@ export function Subcommand (parent: string, name: string, description: string) {
 
     target.identifier = 'subcommand'
     target.prototype.data.parent = parent.toLowerCase().split('.')
-    target.prototype.data.label = name
+    target.prototype.data.label = name.toLowerCase()
     target.prototype.data.description = description
   }
 }

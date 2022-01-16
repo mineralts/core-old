@@ -8,7 +8,7 @@
  *
  */
 
-import { exec } from 'child_process'
+import { execSync } from 'child_process'
 import path from 'path'
 import Kernel from '../Kernel'
 import Logger from '@mineralts/logger'
@@ -21,12 +21,29 @@ export default class Ignitor {
   public async forge () {
     const [commandName, ...args] = process.argv.slice(2)
 
-    this.environment.registerEnvironment()
-
     if (commandName === 'generate:manifest' || commandName === 'help' || !commandName) {
-      await this.execTypescript(commandName, ...args)
-    } else {
-      await this.execJavascript(commandName, ...args)
+      await this.execTypescript(commandName || 'help', ...args)
+    }
+
+    try {
+      const manifest = await import(path.join(process.cwd(), 'forge-manifest.json'))
+      const command = manifest.commands.find((command) => command.commandName === commandName)
+
+      if (!command) {
+        this.logger.error('Command not found.')
+        return
+      }
+
+      this.environment.registerEnvironment()
+
+      if (command.settings?.loadApp) {
+        await this.execTypescript(commandName, ...args)
+      } else {
+        await this.execJavascript(commandName, ...args)
+      }
+    } catch (err) {
+      this.logger.fatal('The manifest file was not found, please generate it before running a command.')
+      process.exit(1)
     }
   }
 
@@ -37,8 +54,9 @@ export default class Ignitor {
     const tsnode = path.join(process.cwd(), 'node_modules', 'ts-node', 'dist', 'bin.js')
     const command = `node ${tsnode} ${forgeFile} ${stringArgs}`
 
-    const { stdout, stderr, stdin } = await exec(command, {
+    execSync(command, {
       cwd: process.cwd(),
+      stdio: 'inherit',
       env: {
         TOKEN: this.environment.cache.get<string>('TOKEN'),
         COMMAND_NAME: commandName,
@@ -46,9 +64,7 @@ export default class Ignitor {
       }
     })
 
-    stdout?.pipe(process.stdout)
-    stderr?.pipe(process.stderr)
-    process.stdin.pipe(stdin!)
+    process.exit()
   }
 
   private async execJavascript (commandName: string, ...args: string[]) {

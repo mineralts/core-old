@@ -25,25 +25,26 @@ export default class Ignitor {
       await this.execTypescript(commandName || 'help', ...args)
     }
 
+    let command
+
     try {
       const manifest = await import(path.join(process.cwd(), 'forge-manifest.json'))
-      const command = manifest.commands.find((command) => command.commandName === commandName)
-
-      if (!command) {
-        this.logger.error('Command not found.')
-        return
-      }
-
-      this.environment.registerEnvironment()
-
-      if (command.settings?.loadApp) {
-        await this.execTypescript(commandName, ...args)
-      } else {
-        await this.execJavascript(commandName, ...args)
-      }
+      command = manifest.commands.find((command) => command.commandName === commandName)
     } catch (err) {
       this.logger.fatal('The manifest file was not found, please generate it before running a command.')
       process.exit(1)
+    }
+
+    if (!command) {
+      this.logger.error('Command not found.')
+      return
+    }
+
+    this.environment.registerEnvironment()
+    if (command.settings?.loadApp) {
+      await this.execTypescript(commandName, ...args)
+    } else {
+      await this.execJavascript(commandName, ...args)
     }
   }
 

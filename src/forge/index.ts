@@ -16,7 +16,7 @@ import path from 'path'
 class Forge {
   private logger: Logger = new Logger
   private environment: Environment = new Environment()
-  private kernel: Kernel = new Kernel(process.env.TOKEN!)
+  private kernel: Kernel = new Kernel()
 
   public async handle () {
     this.environment.registerEnvironment()

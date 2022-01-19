@@ -52,8 +52,8 @@ export default class Ignitor {
     const forgeFile = path.join('node_modules', '@mineralts', 'core', 'build', 'src', 'forge')
     const stringArgs = args.slice(1).join(' ')
 
-    const tsnode = path.join(process.cwd(), 'node_modules', 'ts-node', 'dist', 'bin.js')
-    const command = `node ${tsnode} ${forgeFile} ${stringArgs}`
+    const esbuild = path.join(process.cwd(), 'node_modules', 'esbuild-dev', 'pkg', 'esbuild-dev.bin.js')
+    const command = `node ${esbuild} ${forgeFile} ${stringArgs}`
 
     execSync(command, {
       cwd: process.cwd(),

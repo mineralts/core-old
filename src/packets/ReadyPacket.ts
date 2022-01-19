@@ -23,9 +23,10 @@ export default class ReadyPacket extends Packet {
       undefined
     )
 
+    const token = assembler.application.environment.cache.get('TOKEN') as string
     const client = new Client(
       assembler.application.container,
-      assembler.application.token,
+      token,
       {},
       user,
       payload.session_id,

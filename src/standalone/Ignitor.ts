@@ -76,7 +76,7 @@ export default class Ignitor {
       process.exit(1)
     }
 
-    const kernel = new Kernel(token)
+    const kernel = new Kernel()
     await kernel.application.registerCliCommands()
 
     const command = kernel.application.commands.get(commandName)

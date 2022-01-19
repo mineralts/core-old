@@ -9,7 +9,7 @@ export default class Kernel {
   private readonly assembler: Assembler
   private readonly packetManager: PacketManager
 
-  constructor (token: string) {
+  constructor () {
     const JSON_PACKAGE = this.loadFile(join(process.cwd(), 'package.json'))
     const rcFile = this.loadRcFile()
 
@@ -17,7 +17,6 @@ export default class Kernel {
       appName: JSON_PACKAGE.name,
       version: JSON_PACKAGE.version,
       rcFile,
-      token,
     })
 
     this.packetManager = new PacketManager()

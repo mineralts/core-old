@@ -27,6 +27,7 @@ export default class GuildBuilder {
       this.payload.icon,
       this.payload.banner,
       this.payload.splash,
+      this.payload.discovery_splash,
       this.payload.description,
       this.payload.premium_tier,
       this.payload.premium_subscription_count,
@@ -69,7 +70,7 @@ export default class GuildBuilder {
       new InviteManager()
     )
 
-    guild.roles = new GuildRoleManager(guild)
+    guild.setRoles(new GuildRoleManager(guild))
 
     return guild
   }

@@ -8,7 +8,7 @@ export default class InviteDeletePacket extends Packet {
     const guild = assembler.application.client.guilds.cache.get(payload.guild_id)
     const invite = guild!.invites.cache.get(payload.code)
 
-    if(!invite) {
+    if (!invite) {
       return
     }
 

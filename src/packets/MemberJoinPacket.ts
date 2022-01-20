@@ -13,7 +13,7 @@ export default class MemberJoinPacket extends Packet {
     const guildMemberBuilder = new GuildMemberBuilder(client, guild!.roles.cache, guild!)
     const guildMember = guildMemberBuilder.build(payload)
 
-    if (guildMember.user.isBot) {
+    if (guildMember.user.isBot()) {
       guild?.bots.cache.set(guildMember.id, guildMember)
     } else {
       guild?.members.cache.set(guildMember.id, guildMember)

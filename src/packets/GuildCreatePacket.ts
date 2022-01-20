@@ -46,7 +46,7 @@ export default class GuildCreatePacket extends Packet {
     payload.members.forEach((item: any) => {
       const guildMember = guildMemberBuilder.build(item)
 
-      if (guildMember.user.isBot) {
+      if (guildMember.user.isBot()) {
         this.guildBots.set(guildMember.user.id, guildMember)
       } else {
         this.guildMembers.set(guildMember.user.id, guildMember)

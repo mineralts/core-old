@@ -15,7 +15,7 @@ export default class MemberLeavePacket extends Packet {
 
     assembler.eventListener.emit('guildMemberLeave', guildMember)
 
-    if (guildMember!.user.isBot) {
+    if (guildMember!.user.isBot()) {
       guild?.bots.cache.delete(guildMember!.id)
     } else {
       guild?.members.cache.delete(guildMember!.id)

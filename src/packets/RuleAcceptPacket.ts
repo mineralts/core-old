@@ -14,8 +14,8 @@ export default class RuleAcceptPacket extends Packet {
       return
     }
 
-    if (member.isPending !== payload.pending) {
-      member.isPending = false
+    if (member.isPending() !== payload.pending) {
+      member.pending = false
       assembler.eventListener.emit('rulesAccept', client)
     }
   }
